@@ -1,0 +1,4 @@
+app:
+  build:
+    image: go_image
+    dockerfile_path: Dockerfile

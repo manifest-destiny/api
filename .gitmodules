@@ -1,0 +1,12 @@
+[submodule "vendor/github.com/emicklei/go-restful"]
+	path = vendor/github.com/emicklei/go-restful
+	url = https://github.com/emicklei/go-restful.git
+[submodule "vendor/github.com/lib/pq"]
+	path = vendor/github.com/lib/pq
+	url = https://github.com/lib/pq.git
+[submodule "vendor/google.golang.org/api"]
+	path = vendor/google.golang.org/api
+	url = https://github.com/google/google-api-go-client.git
+[submodule "vendor/github.com/dgrijalva/jwt-go"]
+	path = vendor/github.com/dgrijalva/jwt-go
+	url = https://github.com/dgrijalva/jwt-go.git
