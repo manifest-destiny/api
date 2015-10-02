@@ -1,4 +1,9 @@
 app:
   build:
-    image: go_image
+    image: burrbd/manifest-destiny
     dockerfile_path: Dockerfile
+awsdeployment:
+  image: codeship/aws-deployment
+  encrypted_env_file: deployment.env.encrypted
+  volumes:
+    - ./:/deploy

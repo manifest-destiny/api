@@ -146,9 +146,3 @@ func PlayerFromToken(token *GoogleToken) (*player.Player, error) {
 	}
 	return p, nil
 }
-
-func fatal(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}

@@ -1,9 +1,3 @@
-app:
-    build: .
-    ports:
-        - "8080:8080"
-    links:
-        - db
 db:
     image: postgres:9.4.4
     environment:

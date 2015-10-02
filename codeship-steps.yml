@@ -1,2 +1,8 @@
 - service: app
   command: go test
+- service: awsdeployment
+  tag: master
+  command: /deploy/scripts/build.sh
+- service: awsdeployment
+  tag: master
+  command: /deploy/scripts/deploy-prod.sh

@@ -10,4 +10,4 @@ a='export API_PORT="8080"'
 echo $u$p$n$h$s$a;
 
 echo '# Run this command to configure your environment:
-# eval "$(./setup.sh)"';
+# eval "$(./development.env.sh)"';

@@ -1,4 +1,9 @@
 api
+codeship.aes
+keys/tls_cert.crt
+keys/tls_key.key
+deployment.env
+.ebextensions/eb.config
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o

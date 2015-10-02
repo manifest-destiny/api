@@ -1,11 +1,7 @@
 FROM golang:1.5.1
-MAINTAINER baydodd@gmail.com
-ENV DIR /app/src/github.com/manifest-destiny/api
-RUN mkdir -p $DIR
-ADD . $DIR
-WORKDIR $DIR
-ENV GOPATH $GOPATH:/app
+EXPOSE 80
+WORKDIR /go/src/github.com/manifest-destiny/api
+COPY . ./
 ENV GO15VENDOREXPERIMENT 1
-RUN go build -o manifest-dstiny-api .
-# RUN eval "$(./env)"
-CMD ["./manifest-dstiny-api"]
+RUN go build -o manifest-destiny-api .
+CMD ["./manifest-destiny-api"]
