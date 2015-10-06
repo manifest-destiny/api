@@ -2,9 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"encoding/base64"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -22,8 +20,8 @@ const (
 )
 
 var (
-	dbInfo, port, cert, key string
-	tls                     bool
+	dbInfo, port string
+	tls          bool
 )
 
 func init() {
@@ -36,26 +34,14 @@ func init() {
 		os.Getenv("DATABASE_SSL"))
 
 	port = os.Getenv("API_PORT")
-	if port == "" {
-		port = "80"
+	if os.Getenv("TLS_ENABLED") == "1" {
+		tls = true
+	} else {
+		tls = false
 	}
 
-	// write TLS cert and key to file
-	os.Remove(tlsKey)
-	os.Remove(tlsCert)
-
-	if os.Getenv("TLS_KEY_BASE64") == "" || os.Getenv("TLS_CERTIFICATE_BASE64") == "" {
-		tls = false
-	} else {
-		tls = true
-		tlsKeyB, err := base64.StdEncoding.DecodeString(os.Getenv("TLS_KEY_BASE64"))
-		fatal(err)
-		err = ioutil.WriteFile(tlsKey, tlsKeyB, 0400)
-		fatal(err)
-		tlsCertB, err := base64.StdEncoding.DecodeString(os.Getenv("TLS_CERTIFICATE_BASE64"))
-		fatal(err)
-		err = ioutil.WriteFile(tlsCert, tlsCertB, 0400)
-		fatal(err)
+	if port == "" {
+		port = "80"
 	}
 }
 
