@@ -1,5 +1,7 @@
-db:
+amercia_db:
     image: postgres:9.4.4
     environment:
         POSTGRES_USER: developer
         POSTGRES_PASSWORD: password
+    ports:
+        - "5432:5432"

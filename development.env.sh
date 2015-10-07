@@ -1,13 +1,17 @@
 #!/bin/sh
 
-u='export DATABASE_USER="developer"\n'
-p='export DATABASE_PASSWORD="password"\n'
-n='export DATABASE_NAME="develop"\n'
-h='export DATABASE_HOST="db"\n'
-s='export DATABASE_SSL="disabled"\n'
-a='export API_PORT="8080"'
+env_script="$(basename "$0")"
 
-echo $u$p$n$h$s$a;
+cat << EOM
+export DATABASE_USER="developer"
+export DATABASE_PASSWORD="password"
+export DATABASE_NAME="developer"
+export DATABASE_HOST="amercia_db"
+export DATABASE_PORT="5432"
+export DATABASE_SSL="disable"
+export API_PORT="8088"
+export WEB_CLIENT_ID="801574721267-8ocanqgcgln83r5s2bdpk5imu78r2ouk.apps.googleusercontent.com"
 
-echo '# Run this command to configure your environment:
-# eval "$(./development.env.sh)"';
+# Run this command to configure your environment:
+# eval "\$(./$env_script)"
+EOM

@@ -1,17 +1,18 @@
 package main
 
 import (
-	"database/sql"
+	_ "database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
+	"github.com/emicklei/go-restful"
 	_ "github.com/lib/pq"
 
-	"github.com/emicklei/go-restful"
+	"github.com/manifest-destiny/api"
 	"github.com/manifest-destiny/api/apidocs"
-	"github.com/manifest-destiny/api/player"
+	"github.com/manifest-destiny/api/user"
 )
 
 const (
@@ -20,44 +21,45 @@ const (
 )
 
 var (
-	dbInfo, port string
-	tls          bool
+	dbInfo, port, webClientID string
+	tls                       bool
 )
 
 func init() {
-
-	dbInfo = fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=%s",
+	dbInfo = fmt.Sprintf("user=%s password=%s host=%s port=%s dbname=%s sslmode=%s",
 		os.Getenv("DATABASE_USER"),
 		os.Getenv("DATABASE_PASSWORD"),
 		os.Getenv("DATABASE_HOST"),
+		os.Getenv("DATABASE_PORT"),
 		os.Getenv("DATABASE_NAME"),
 		os.Getenv("DATABASE_SSL"))
 
-	port = os.Getenv("API_PORT")
-	if os.Getenv("TLS_ENABLED") == "1" {
-		tls = true
-	} else {
-		tls = false
-	}
+	webClientID = os.Getenv("WEB_CLIENT_ID")
 
+	port = os.Getenv("API_PORT")
 	if port == "" {
 		port = "80"
 	}
+
+	tls = os.Getenv("TLS_ENABLED") == "1"
 }
 
 func main() {
 	// initialize postgres backend
-	db, err := sql.Open("postgres", dbInfo)
+	conn, err := api.NewDB("postgres", dbInfo)
+	fatal(err)
+	defer conn.Close()
+
+	// initialize token validator
+	v, err := api.GoogleTokenValidator(webClientID)
 	fatal(err)
 
-	defer db.Close()
-
-	// Add store to resource
-	p := player.PlayerResource{}
+	// Add db and token validator to user resource
+	userResource := &user.Resource{conn, v}
 
 	// Register container
 	wsContainer := restful.NewContainer()
-	p.Register(wsContainer)
+	user.RegisterContainer(wsContainer, userResource)
 
 	// Setup api docs
 	apidocs.Register(wsContainer, port, tls)

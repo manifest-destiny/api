@@ -1,4 +1,5 @@
 api
+service/service
 codeship.aes
 keys/tls_cert.crt
 keys/tls_key.key
