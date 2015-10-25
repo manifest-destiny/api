@@ -11,6 +11,7 @@ export DATABASE_PORT="5432"
 export DATABASE_SSL="disable"
 export API_PORT="8088"
 export WEB_CLIENT_ID="801574721267-8ocanqgcgln83r5s2bdpk5imu78r2ouk.apps.googleusercontent.com"
+export SWAGGER_API_URL="http://localhost:8088"
 
 # Run this command to configure your environment:
 # eval "\$(./$env_script)"

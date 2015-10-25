@@ -21,8 +21,11 @@ const (
 )
 
 var (
-	dbInfo, port, webClientID string
-	tls                       bool
+	dbInfo        string
+	port          string
+	webClientID   string
+	tls           bool
+	swaggerAPIURL string
 )
 
 func init() {
@@ -42,6 +45,8 @@ func init() {
 	}
 
 	tls = os.Getenv("TLS_ENABLED") == "1"
+
+	swaggerAPIURL = os.Getenv("SWAGGER_API_URL")
 }
 
 func main() {
@@ -62,7 +67,7 @@ func main() {
 	user.RegisterContainer(wsContainer, userResource)
 
 	// Setup api docs
-	apidocs.Register(wsContainer, port, tls)
+	apidocs.Register(wsContainer, swaggerAPIURL)
 
 	// Start server
 	log.Printf("listening on localhost:%s", port)
