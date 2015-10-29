@@ -8,10 +8,10 @@ import (
 	"os"
 
 	"github.com/emicklei/go-restful"
+	"github.com/emicklei/go-restful/swagger"
 	_ "github.com/lib/pq"
 
 	"github.com/manifest-destiny/api"
-	"github.com/manifest-destiny/api/apidocs"
 	"github.com/manifest-destiny/api/user"
 )
 
@@ -21,11 +21,12 @@ const (
 )
 
 var (
-	dbInfo        string
-	port          string
-	webClientID   string
-	tls           bool
-	swaggerAPIURL string
+	dbInfo          string
+	port            string
+	webClientID     string
+	tls             bool
+	swaggerAPIURL   string
+	swaggerFilePath string
 )
 
 func init() {
@@ -47,6 +48,7 @@ func init() {
 	tls = os.Getenv("TLS_ENABLED") == "1"
 
 	swaggerAPIURL = os.Getenv("SWAGGER_API_URL")
+	swaggerFilePath = os.Getenv("SWAGGER_FILE_PATH")
 }
 
 func main() {
@@ -67,7 +69,14 @@ func main() {
 	user.RegisterContainer(wsContainer, userResource)
 
 	// Setup api docs
-	apidocs.Register(wsContainer, swaggerAPIURL)
+	config := swagger.Config{
+		ApiVersion:      "1",
+		WebServices:     wsContainer.RegisteredWebServices(),
+		WebServicesUrl:  swaggerAPIURL,
+		ApiPath:         "/apidocs.json",
+		SwaggerPath:     "/apidocs/",
+		SwaggerFilePath: swaggerFilePath}
+	swagger.RegisterSwaggerService(config, wsContainer)
 
 	// Start server
 	log.Printf("listening on localhost:%s", port)

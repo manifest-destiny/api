@@ -1,5 +1,5 @@
 - service: app
-  command: ./scripts/deploy-tests.sh
+  command: ./scripts/run-tests.sh
 - service: awsdeployment
   tag: master
   command: /deploy/scripts/build.sh
